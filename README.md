@@ -1,3 +1,11 @@
+# RagKit enhancement milestones
+
+This enhancement series was built on 24 October 2026 with AI coding assistance. Its 2025 Git author and committer timestamps are synthetic reconstructed metadata, not evidence of development in 2025. The original actual October 2026 root is preserved; the resulting timestamps do not represent chronological development.
+
+This intermediate feature milestone is a work in progress. The final milestone supplies the complete application guide. See [HISTORY.md](HISTORY.md).
+
+---
+
 # RagKit
 
 **Small retrieval primitives with scores you can inspect and citations you can verify.**
