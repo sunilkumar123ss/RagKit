@@ -8,5 +8,6 @@ Preserved original root: `2059752e5fcb091369db7f19fff781eeba988be6`. Original pr
 | --- | --- |
 | 2025-01-16 | Add persistent document storage and hybrid retrieval engine |
 | 2025-03-15 | Add cited extractive answers and configurable model providers |
+| 2025-04-15 | Build document workspace with uploads and source inspection |
 
 Every row above was actually prepared on **24 October 2026**. No empty commits were added.

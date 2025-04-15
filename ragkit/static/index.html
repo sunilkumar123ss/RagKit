@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f766e">
+  <title>RagKit · Your document workspace</title>
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/style.css">
+  <script defer src="/static/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="RagKit home"><span class="brand-mark" aria-hidden="true">R</span>RagKit<span class="brand-caption">DOCUMENT WORKSPACE</span></a>
+    <div class="header-right"><span id="connection" class="status-pill"><i></i>Connecting</span><a href="/docs" target="_blank" rel="noopener">API docs <span aria-hidden="true">↗</span></a></div>
+  </header>
+  <main>
+    <section class="intro"><div><p class="eyebrow">FROM YOUR SOURCES TO YOUR ANSWER</p><h1>Knowledge, with the receipts.</h1><p>Ask your documents a question. Follow every answer back to the passage behind it.</p></div><div class="workspace-caption"><span class="workspace-dot"></span>Local workspace<br><small>Documents persist on this machine</small></div></section>
+    <div id="notice" class="notice" role="status" hidden></div>
+    <div class="workspace">
+      <aside class="library panel" aria-label="Document library">
+        <div class="section-heading"><div><p class="eyebrow">YOUR KNOWLEDGE BASE</p><h2>Library <span id="document-count" class="count">0</span></h2></div><button id="add-documents" class="icon-button" aria-label="Add documents">+</button></div>
+        <p class="muted small">Choose documents to focus your search, or search the entire library.</p>
+        <button id="upload-shortcut" class="upload-shortcut"><span aria-hidden="true">↥</span><strong>Add your documents</strong><small>TXT, Markdown, JSON or PDF · up to 8 MB</small></button>
+        <div class="library-toolbar"><label class="small"><input type="checkbox" id="select-all" checked> All documents</label><span id="chunk-count" class="muted small">0 passages</span></div>
+        <div id="document-list" class="document-list"></div>
+        <div id="library-empty" class="library-empty"><div class="empty-symbol" aria-hidden="true">▤</div><strong>A fresh page.</strong><p>Add a few documents to start asking questions, or explore a small synthetic collection.</p><button id="load-sample" class="button secondary">Try sample documents</button></div>
+        <div class="index-panel"><div class="index-title"><strong>Semantic index</strong><span id="index-badge" class="mini-badge">Not built</span></div><p id="index-description" class="small muted">Lexical search works immediately. Dense and hybrid retrieval require a model and an index.</p><button id="build-index" class="button subtle full">Build semantic index <span aria-hidden="true">↗</span></button></div>
+      </aside>
+      <section class="main-column" aria-label="Ask your documents">
+        <form id="question-form" class="query-panel panel">
+          <div class="section-heading"><div><p class="eyebrow">ASK YOUR LIBRARY</p><h2>What would you like to know?</h2></div><span class="step-label">01 / RETRIEVE</span></div>
+          <label class="sr-only" for="question">Your question</label><textarea id="question" maxlength="2000" rows="3" placeholder="Ask a specific question about your documents…" required></textarea>
+          <div id="sample-prompts" class="sample-prompts" hidden><span>Try asking</span><button type="button" data-question="How much annual leave do employees receive?">How much annual leave do employees receive?</button><button type="button" data-question="How often are databases backed up?">How often are databases backed up?</button></div>
+          <div class="settings-grid">
+            <label>Retrieval<select id="mode"><option value="lexical">Lexical · keyword matching</option><option value="dense">Dense · semantic similarity</option><option value="hybrid">Hybrid · lexical + semantic</option></select></label>
+            <label>Answer mode<select id="provider"><option value="extractive">Offline excerpts</option><option value="ollama">Ollama model</option><option value="openai">OpenAI model</option><option value="anthropic">Anthropic model</option></select></label>
+            <label>Passages<select id="top-k"><option>3</option><option selected>5</option><option>8</option><option>12</option><option>20</option></select></label>
+          </div>
+          <div class="option-row"><label class="small"><input type="checkbox" id="rerank"> Rerank with a cross-encoder</label><span class="muted small">Optional model download</span></div>
+          <p id="provider-note" class="provider-note"><span aria-hidden="true">◎</span>Offline excerpts quote your sources. No generation service is contacted.</p>
+          <div class="query-actions"><span id="scope-note" class="small muted">Searching the whole library</span><div><button id="search-only" class="button secondary" type="button">Retrieve only</button><button id="ask-button" class="button primary" type="submit">Ask documents <span aria-hidden="true">↗</span></button></div></div>
+        </form>
+        <section id="answer-panel" class="answer-panel panel" aria-live="polite" aria-busy="false">
+          <div class="section-heading"><div><p class="eyebrow">GROUNDED IN YOUR DOCUMENTS</p><h2 id="answer-heading">Answer workspace</h2></div><span class="step-label">02 / INSPECT</span></div>
+          <div id="answer-empty" class="answer-empty"><div class="answer-illustration" aria-hidden="true"><span>≡</span><i>↗</i><span>“ ”</span></div><h3>Every useful answer starts with a source.</h3><p>Your answer and its supporting passages will appear here. Add documents, then ask your first question.</p><div class="empty-features"><span><b>01</b> Add sources</span><span><b>02</b> Ask a question</span><span><b>03</b> Inspect the evidence</span></div></div>
+          <div id="answer-loading" class="answer-loading" hidden><span class="spinner"></span><strong id="loading-text">Retrieving relevant passages…</strong><p class="muted small">Model-backed requests can take longer. You can keep inspecting your library.</p></div>
+          <div id="answer-content" hidden><div class="answer-meta"><span id="answer-type" class="mini-badge teal"></span><span id="answer-meta" class="muted small"></span></div><p id="answer-text" class="answer-text"></p><div id="citation-links" class="citation-links"></div><p id="answer-caution" class="small muted"></p></div>
+        </section>
+        <section id="sources-section" class="sources-section" hidden><div class="section-heading"><h2>Retrieved evidence <span id="source-count" class="count"></span></h2><span class="muted small">Inspect the original context</span></div><div id="sources-list" class="sources-list"></div></section>
+        <footer class="workspace-footer">RagKit · Local retrieval, visible evidence.<span>Models are optional. Sources remain inspectable.</span></footer>
+      </section>
+    </div>
+  </main>
+  <dialog id="add-dialog" class="dialog"><div class="dialog-heading"><div><p class="eyebrow">GROW YOUR LIBRARY</p><h2>Add documents</h2></div><button class="icon-button" data-close="add-dialog" aria-label="Close add documents">×</button></div><div class="tabs" role="tablist" aria-label="Add method"><button id="upload-tab" role="tab" aria-selected="true" aria-controls="upload-tab-panel">Upload files</button><button id="paste-tab" role="tab" aria-selected="false" aria-controls="paste-tab-panel">Paste text</button></div><div id="upload-tab-panel" role="tabpanel" aria-labelledby="upload-tab"><label id="drop-zone" class="drop-zone" for="file-input"><span aria-hidden="true">↥</span><strong>Drop documents here, or browse</strong><small>TXT, MD, JSON or text PDF · 8 MB per file</small><input id="file-input" type="file" accept=".txt,.md,.json,.pdf" multiple></label><p class="small muted">JSON accepts records with <code>title</code>, <code>text</code>, optional <code>id</code> and <code>source</code>. A matching ID replaces that document. Scanned PDFs need OCR first.</p><div id="upload-progress" class="small" role="status"></div></div><form id="paste-tab-panel" role="tabpanel" aria-labelledby="paste-tab" hidden><label>Document title<input id="paste-title" maxlength="500" required placeholder="e.g. Product handbook"></label><label>Source label <span class="muted">(optional)</span><input id="paste-source" maxlength="2048" placeholder="e.g. Internal handbook, October 2026"></label><label>Document text<textarea id="paste-text" maxlength="1000000" rows="8" required placeholder="Paste the text you want to search…"></textarea></label><button id="save-paste" class="button primary full" type="submit">Add to library</button></form><p id="add-error" class="inline-error" role="alert" hidden></p></dialog>
+  <dialog id="source-dialog" class="dialog source-dialog"><div class="dialog-heading"><div><p class="eyebrow">ORIGINAL DOCUMENT</p><h2 id="source-title">Source</h2></div><button class="icon-button" data-close="source-dialog" aria-label="Close source inspector">×</button></div><p id="source-location" class="small muted"></p><div id="source-original" class="source-original"></div></dialog>
+  <dialog id="delete-dialog" class="dialog compact-dialog"><h2>Remove this document?</h2><p id="delete-name"></p><p class="muted small">This removes its stored text and passages from the local workspace. You can upload it again.</p><div class="dialog-actions"><button class="button secondary" data-close="delete-dialog">Cancel</button><button id="confirm-delete" class="button danger">Remove document</button></div></dialog>
+</body>
+</html>
