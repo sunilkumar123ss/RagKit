@@ -1,0 +1,29 @@
+{
+  "description":"Small hand-labeled synthetic demonstration; not a production benchmark or an independent model ranking.",
+  "queries":[
+    {"query":"How many days of annual leave are available?","relevant":["sample-leave"]},
+    {"query":"How do I request vacation?","relevant":["sample-leave"]},
+    {"query":"How long does reimbursement take?","relevant":["sample-expenses"]},
+    {"query":"What is the deadline for filing an expense claim?","relevant":["sample-expenses"]},
+    {"query":"How quickly does urgent support respond?","relevant":["sample-support"]},
+    {"query":"When is the support desk open?","relevant":["sample-support"]},
+    {"query":"How often are databases backed up?","relevant":["sample-backups"]},
+    {"query":"How long can we keep a backup?","relevant":["sample-backups"]},
+    {"query":"What should I finish during my first week?","relevant":["sample-onboarding"]},
+    {"query":"Who helps a new teammate get started?","relevant":["sample-onboarding"]},
+    {"query":"When should we roll back a production release?","relevant":["sample-release"]},
+    {"query":"How much traffic reaches a new version at first?","relevant":["sample-release"]},
+    {"query":"How often are permissions reviewed?","relevant":["sample-access"]},
+    {"query":"What authentication does an employee account need?","relevant":["sample-access"]},
+    {"query":"How many days can I work from home?","relevant":["sample-remote"]},
+    {"query":"What is the equipment allowance for remote work?","relevant":["sample-remote"]},
+    {"query":"How long are application logs kept?","relevant":["sample-retention"]},
+    {"query":"When are customer documents deleted?","relevant":["sample-retention"]},
+    {"query":"What is the default meeting duration?","relevant":["sample-meetings"]},
+    {"query":"When is the protected focus period?","relevant":["sample-meetings"]},
+    {"query":"How much can I spend on courses?","relevant":["sample-learning"]},
+    {"query":"Can unused learning money roll into next year?","relevant":["sample-learning"]},
+    {"query":"When should an incident reach the engineering lead?","relevant":["sample-escalation"]},
+    {"query":"How often does the incident coordinator post an update?","relevant":["sample-escalation"]}
+  ]
+}
