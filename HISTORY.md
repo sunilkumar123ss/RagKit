@@ -11,5 +11,6 @@ Preserved original root: `2059752e5fcb091369db7f19fff781eeba988be6`. Original pr
 | 2025-04-15 | Build document workspace with uploads and source inspection |
 | 2025-06-17 | Add command line workspace and labeled retrieval evaluation |
 | 2025-07-15 | Integrate MCP tools and LangChain retrieval |
+| 2025-09-15 | Record actual model checks and reproducible benchmark evidence |
 
 Every row above was actually prepared on **24 October 2026**. No empty commits were added.

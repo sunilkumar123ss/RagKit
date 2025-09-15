@@ -1,0 +1,378 @@
+{
+  "dataset": "ragkit-synthetic-handbook-v1",
+  "disclosure": "Small hand-labeled synthetic demonstration; not a production benchmark or an independent model ranking.",
+  "measured_at": "2026-10-24T13:23:24.264337+00:00",
+  "python": "3.12.14",
+  "mode": "hybrid",
+  "rerank": true,
+  "top_k": 3,
+  "documents": 12,
+  "queries": 24,
+  "recall_at_k": 1.0,
+  "mrr_at_k": 0.9791666666666666,
+  "ndcg_at_k": 0.9846220730654774,
+  "median_query_latency_ms": 18.728,
+  "timing_note": "Single local run; query timing excludes index construction and includes lazy reranker startup when enabled.",
+  "per_query": [
+    {
+      "query": "How many days of annual leave are available?",
+      "relevant": [
+        "sample-leave"
+      ],
+      "ranked": [
+        "sample-leave",
+        "sample-retention",
+        "sample-remote"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 2635.735
+    },
+    {
+      "query": "How do I request vacation?",
+      "relevant": [
+        "sample-leave"
+      ],
+      "ranked": [
+        "sample-leave",
+        "sample-expenses",
+        "sample-support"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 342.629
+    },
+    {
+      "query": "How long does reimbursement take?",
+      "relevant": [
+        "sample-expenses"
+      ],
+      "ranked": [
+        "sample-expenses",
+        "sample-leave",
+        "sample-learning"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 83.59
+    },
+    {
+      "query": "What is the deadline for filing an expense claim?",
+      "relevant": [
+        "sample-expenses"
+      ],
+      "ranked": [
+        "sample-expenses",
+        "sample-leave",
+        "sample-retention"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 19.257
+    },
+    {
+      "query": "How quickly does urgent support respond?",
+      "relevant": [
+        "sample-support"
+      ],
+      "ranked": [
+        "sample-support",
+        "sample-meetings",
+        "sample-escalation"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 105.658
+    },
+    {
+      "query": "When is the support desk open?",
+      "relevant": [
+        "sample-support"
+      ],
+      "ranked": [
+        "sample-support",
+        "sample-onboarding",
+        "sample-meetings"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 18.173
+    },
+    {
+      "query": "How often are databases backed up?",
+      "relevant": [
+        "sample-backups"
+      ],
+      "ranked": [
+        "sample-backups",
+        "sample-retention",
+        "sample-expenses"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 15.556
+    },
+    {
+      "query": "How long can we keep a backup?",
+      "relevant": [
+        "sample-backups"
+      ],
+      "ranked": [
+        "sample-backups",
+        "sample-retention",
+        "sample-escalation"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 83.521
+    },
+    {
+      "query": "What should I finish during my first week?",
+      "relevant": [
+        "sample-onboarding"
+      ],
+      "ranked": [
+        "sample-onboarding",
+        "sample-remote",
+        "sample-leave"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 104.562
+    },
+    {
+      "query": "Who helps a new teammate get started?",
+      "relevant": [
+        "sample-onboarding"
+      ],
+      "ranked": [
+        "sample-onboarding",
+        "sample-learning",
+        "sample-remote"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 20.068
+    },
+    {
+      "query": "When should we roll back a production release?",
+      "relevant": [
+        "sample-release"
+      ],
+      "ranked": [
+        "sample-release",
+        "sample-backups",
+        "sample-support"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 21.333
+    },
+    {
+      "query": "How much traffic reaches a new version at first?",
+      "relevant": [
+        "sample-release"
+      ],
+      "ranked": [
+        "sample-release",
+        "sample-support",
+        "sample-onboarding"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 18.74
+    },
+    {
+      "query": "How often are permissions reviewed?",
+      "relevant": [
+        "sample-access"
+      ],
+      "ranked": [
+        "sample-access",
+        "sample-escalation",
+        "sample-retention"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 14.861
+    },
+    {
+      "query": "What authentication does an employee account need?",
+      "relevant": [
+        "sample-access"
+      ],
+      "ranked": [
+        "sample-access",
+        "sample-leave",
+        "sample-onboarding"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 16.195
+    },
+    {
+      "query": "How many days can I work from home?",
+      "relevant": [
+        "sample-remote"
+      ],
+      "ranked": [
+        "sample-leave",
+        "sample-remote",
+        "sample-retention"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 0.5,
+      "ndcg": 0.6309297535714575,
+      "latency_ms": 14.906
+    },
+    {
+      "query": "What is the equipment allowance for remote work?",
+      "relevant": [
+        "sample-remote"
+      ],
+      "ranked": [
+        "sample-remote",
+        "sample-leave",
+        "sample-access"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 14.865
+    },
+    {
+      "query": "How long are application logs kept?",
+      "relevant": [
+        "sample-retention"
+      ],
+      "ranked": [
+        "sample-retention",
+        "sample-backups",
+        "sample-leave"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 14.884
+    },
+    {
+      "query": "When are customer documents deleted?",
+      "relevant": [
+        "sample-retention"
+      ],
+      "ranked": [
+        "sample-retention",
+        "sample-access",
+        "sample-escalation"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 17.09
+    },
+    {
+      "query": "What is the default meeting duration?",
+      "relevant": [
+        "sample-meetings"
+      ],
+      "ranked": [
+        "sample-meetings",
+        "sample-support",
+        "sample-escalation"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 14.782
+    },
+    {
+      "query": "When is the protected focus period?",
+      "relevant": [
+        "sample-meetings"
+      ],
+      "ranked": [
+        "sample-meetings",
+        "sample-support",
+        "sample-access"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 14.198
+    },
+    {
+      "query": "How much can I spend on courses?",
+      "relevant": [
+        "sample-learning"
+      ],
+      "ranked": [
+        "sample-learning",
+        "sample-remote",
+        "sample-expenses"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 69.851
+    },
+    {
+      "query": "Can unused learning money roll into next year?",
+      "relevant": [
+        "sample-learning"
+      ],
+      "ranked": [
+        "sample-learning",
+        "sample-leave",
+        "sample-retention"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 84.299
+    },
+    {
+      "query": "When should an incident reach the engineering lead?",
+      "relevant": [
+        "sample-escalation"
+      ],
+      "ranked": [
+        "sample-escalation",
+        "sample-support",
+        "sample-access"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 18.716
+    },
+    {
+      "query": "How often does the incident coordinator post an update?",
+      "relevant": [
+        "sample-escalation"
+      ],
+      "ranked": [
+        "sample-escalation",
+        "sample-support",
+        "sample-meetings"
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg": 1.0,
+      "latency_ms": 16.205
+    }
+  ]
+}
