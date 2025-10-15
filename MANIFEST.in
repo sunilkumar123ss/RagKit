@@ -1,0 +1,8 @@
+include README.md pyproject.toml HISTORY.md
+include main.py test_main.py verify.py example.json project.json verify.yml.template
+include Dockerfile compose.yaml .dockerignore .env.example
+recursive-include docs *.md *.txt *.json *.png *.jpg
+recursive-include .github/workflows *.yml *.yaml
+global-exclude __pycache__ *.py[cod] .DS_Store
+prune .venv
+prune .ragkit
