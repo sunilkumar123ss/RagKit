@@ -1,8 +1,9 @@
 {
   "slug": "RagKit",
-  "title": "RagKit \u2014 Inspectable Retrieval Core",
-  "description": "Lexical BM25 body/title retrieval, reciprocal rank fusion, abstention and exact source citations.",
+  "title": "RagKit \u2014 Modular retrieval and cited answers",
+  "description": "Persistent document workspace with hybrid BM25/dense retrieval, reranking, cited answers, FastAPI, MCP and LangChain integrations.",
   "category": "cv",
   "demo_args": [],
-  "expected_exit": 0
+  "expected_exit": 0,
+  "runtime": "Python 3.10+ for application; optional documented extras; legacy main.py retained"
 }

@@ -1,60 +1,131 @@
-# RagKit enhancement milestones
-
-This enhancement series was built on 24 October 2026 with AI coding assistance. Its 2025 Git author and committer timestamps are synthetic reconstructed metadata, not evidence of development in 2025. The original actual October 2026 root is preserved; the resulting timestamps do not represent chronological development.
-
-This intermediate feature milestone is a work in progress. The final milestone supplies the complete application guide. See [HISTORY.md](HISTORY.md).
-
----
-
 # RagKit
 
-**Small retrieval primitives with scores you can inspect and citations you can verify.**
+**Your documents. Answers with inspectable sources.**
 
-RagKit indexes document bodies and titles separately with BM25, combines both rankings through reciprocal rank fusion, and returns an exact source excerpt with character offsets. All computation is local and deterministic.
+[![Verify RagKit](https://github.com/sunilkumar123ss/RagKit/actions/workflows/verify.yml/badge.svg)](https://github.com/sunilkumar123ss/RagKit/actions/workflows/verify.yml)
 
-## Run
+A local document workspace with persistent storage, hybrid retrieval, reranking, cited answers, a web interface, and API/CLI/MCP integrations. Start offline, then enable actual semantic models or a configured answer provider.
 
-Python 3.9+ · standard library only.
+![RagKit document workspace](docs/screenshots/workspace.png)
 
-```sh
-python3 main.py
-python3 main.py "voice playback" --top-k 2
-python3 main.py --input example.json "retrieval citations"
-python3 main.py --help
-python3 -m unittest discover -s . -p 'test_main.py' -v
-```
+## Start locally
 
-The default fixture is resolved relative to the script. Default demo and help work from any working directory; explicit `--input` paths follow the caller.
-
-## Retrieval path
-
-1. Unicode-aware tokenization case-folds document text and queries.
-2. Body and title BM25 indexes score matching query terms using document frequency and length normalization.
-3. Reciprocal rank fusion combines their ranks with `1 / (60 + rank)`.
-4. A matching source sentence is selected by query-term overlap. The result includes the document ID, source field, exact quote and `[start, end)` character offsets.
-
-Both component scores remain visible. A title-only match cites the title and labels that field explicitly. Queries containing no searchable words are rejected; queries with no matching terms return `abstained: true` and an empty result list.
-
-## Verify the evidence
-
-For every result, the invariant is:
-
-```python
-document[citation["field"]][citation["start"]:citation["end"]] == citation["quote"]
-```
-
-Eight tests check relevance on the synthetic corpus, abstention, exact citation offsets, title-only evidence, fusion consensus, invalid inputs, Unicode tokenization and stable ordering.
-
-## Scope and provenance
-
-Created in **October 2026 with AI coding assistance**, using the project name from Sunil Kumar's CV. Original project source was not recovered. This is a new independent reference; it does not claim the original implementation, adoption, stars, benchmark results or historical development dates.
-
-Both indexes are lexical. There are no embeddings, dense retrieval, cross-encoder reranking, LangChain, Qdrant, MCP or LLM generation adapters. A source quote proves textual provenance, not that a generated claim is supported or true. The tool returns evidence rather than generating an answer. Source documents are treated as data and are never executed.
-
-## Repository checks
+Python 3.10+; from this repository:
 
 ```sh
-python3 verify.py
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e '.[web]'
+ragkit sample
+ragkit serve
 ```
 
-This runs the isolated test suite, synthetic example, and CLI help. The `verify.yml.template` file contains an optional GitHub Actions workflow. Place it at `.github/workflows/verify.yml` to enable hosted checks; the current repository is verified locally.
+Open **http://127.0.0.1:8000**. Ask “How long does expense reimbursement take?” or upload your documents. The bundled handbook is entirely synthetic.
+
+This setup needs no API key, model download or hosted database. Offline answers are explicitly labeled **extractive**: they assemble source excerpts, rather than claim language-model generation. The library persists in `.ragkit` in the current directory. Set `RAGKIT_DATA_DIR` or pass `ragkit --data-dir /path/to/library ...` to change it.
+
+## Features
+
+| Capability | Implementation |
+| --- | --- |
+| Library | TXT, Markdown, structured JSON, text PDF and pasted text; SQLite persistence; inspect and delete documents |
+| Evidence | Overlapping chunks, exact Unicode offsets and citations into the original stored text |
+| Retrieval | Deterministic BM25; actual Sentence-Transformers embeddings in persistent local Qdrant; reciprocal rank fusion |
+| Reranking | Actual CrossEncoder over query/passage pairs |
+| Answers | Offline extractive mode, OpenAI Responses, Anthropic Messages and local Ollama Chat adapters |
+| Interfaces | Responsive web workspace, FastAPI/OpenAPI, CLI, MCP stdio tools and LangChain retriever adapter |
+| Evaluation | Labeled synthetic corpus; recall@k, MRR@k, nDCG@k, per-query rankings and measured latency |
+
+Scanned PDFs need OCR before ingestion. PDF offsets refer to extracted text, not page coordinates. Uploaded documents are treated as text and never executed as code or HTML. Uploads are limited to 8 MiB and one million extracted characters per document.
+
+## Semantic retrieval
+
+```sh
+python -m pip install -e '.[web,dense]'
+export HF_HOME="$PWD/.ragkit/models"
+ragkit index
+ragkit search 'How much time can I take away from work?' --mode hybrid --rerank
+```
+
+The first index build downloads `sentence-transformers/all-MiniLM-L6-v2`; the first reranked query downloads `cross-encoder/ms-marco-MiniLM-L6-v2`. Both run locally and disable remote model code. Configure alternatives through `RAGKIT_EMBEDDING_MODEL` and `RAGKIT_RERANKER_MODEL`.
+
+The web app also has **Build semantic index**. Adding, replacing or deleting documents makes that index stale; rebuild explicitly. Identical re-imports do not invalidate it. RagKit reports missing/stale indexes and model failures instead of silently substituting lexical search.
+
+Qdrant uses embedded local mode. Run **one process per data directory**: stop the web server before using the same semantic index in a CLI/MCP process. BM25, cosine, fusion and reranker scores are ranking signals, not confidence probabilities or proof of relevance.
+
+## Answer providers
+
+Install `python -m pip install -e '.[web,providers]'`, configure a provider, then select it in the UI or use `ragkit ask 'your question' --provider NAME`.
+
+| Provider | Configuration |
+| --- | --- |
+| `extractive` | No configuration; default local excerpts |
+| `ollama` | Running Ollama and an installed model; `RAGKIT_OLLAMA_MODEL`; optional `OLLAMA_HOST` (defaults to `http://127.0.0.1:11434`) |
+| `openai` | `OPENAI_API_KEY` and `RAGKIT_OPENAI_MODEL` |
+| `anthropic` | `ANTHROPIC_API_KEY` and `RAGKIT_ANTHROPIC_MODEL` |
+
+The Python app reads **exported environment variables**, not a `.env` file automatically. Docker Compose reads `.env`. `.env.example` contains configuration names and defaults without credentials.
+
+OpenAI/Anthropic receive the question and selected excerpts when explicitly selected. Keys stay server-side. No model is called when no sources are found. Provider calls bound context and timeouts, validate source IDs, and report malformed output or service errors. Citation validation proves that referenced text exists, **not** that a generated claim logically follows from it.
+
+## CLI and API
+
+```sh
+ragkit ingest notes.md handbook.pdf records.json
+ragkit documents
+ragkit search 'backup recovery' --top-k 3
+ragkit ask 'backup recovery' --provider extractive
+ragkit search 'backup recovery' --document-id sample-backups
+ragkit show sample-backups
+ragkit delete sample-backups
+ragkit status
+ragkit --help
+```
+
+JSON accepts one record, an array, or `{"documents": [...]}`. Each record needs `title` and `text`; `id` and `source` are optional. An explicit existing ID replaces that document atomically. Without an ID, identical title/source/text gets a stable ID; changed content creates another document.
+
+Open **http://127.0.0.1:8000/docs** for the API schema.
+
+```sh
+curl http://127.0.0.1:8000/api/status
+curl -X POST http://127.0.0.1:8000/api/sample
+curl -X POST http://127.0.0.1:8000/api/answer \
+  -H 'Content-Type: application/json' \
+  -d '{"query":"How long does reimbursement take?","mode":"lexical","provider":"extractive","top_k":3}'
+curl -X POST http://127.0.0.1:8000/api/upload -F 'file=@notes.md'
+```
+
+Other routes: `GET /api/documents`, `GET/DELETE /api/documents/{id}`, `POST /api/documents`, `POST /api/search`, and `POST /api/index`. The server restricts Host headers and browser write origins. This is a single-user local workspace; authentication, tenant isolation and internet deployment are outside its scope.
+
+## MCP and LangChain
+
+```sh
+python -m pip install -e '.[mcp,langchain]'
+ragkit --data-dir /absolute/path/to/library mcp
+```
+
+MCP uses the supported 1.x SDK over stdio, with search/answer tools over the existing corpus and no arbitrary filesystem or shell tool. Configure your client with the absolute `.venv/bin/ragkit` executable and the arguments above. The LangChain adapter returns Documents with citation metadata. See [integration examples](docs/INTEGRATIONS.md).
+
+## Tests and evaluation
+
+```sh
+python -m pip install -e '.[web,providers,mcp,langchain,dev]' 'qdrant-client>=1.15,<2'
+python -m pytest -q -m 'not live_models'
+ragkit evaluate --mode lexical --output benchmark-results.local.json
+
+# With the dense extra installed:
+RAGKIT_RUN_LIVE_MODELS=1 python -m pytest -q -m live_models
+ragkit evaluate --mode hybrid --rerank --output benchmark-results.local.json
+```
+
+The 12-document, 24-question evaluation is a hand-labeled **synthetic demonstration**, not a production benchmark or evidence of CV claims. Reports include all queries, document-level deduplication, settings and actual measurement time. Model startup affects timings. [Verification evidence](docs/VERIFICATION.md) distinguishes actual model runs, test doubles and untested services.
+
+GitHub Actions tests Python 3.10, 3.12 and 3.13. A manually enabled job tests real embedding/reranker models; paid provider requests never run in CI. The original standalone demo and eight tests remain available via `python main.py` and `python -m unittest test_main`.
+
+## Docker
+
+```sh
+docker compose up --build
+```
+
+The app runs as a non-root user, publishes only `127.0.0.1:8000`, and persists the corpus/model cache in a named volume. Default dependencies include dense retrieval and providers. Set `RAGKIT_EXTRAS=web` before building for a smaller lexical-only image. Credentials are not copied into the image. Docker is optional for native use.
