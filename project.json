@@ -1,0 +1,8 @@
+{
+  "slug": "RagKit",
+  "title": "RagKit \u2014 Inspectable Retrieval Core",
+  "description": "Lexical BM25 body/title retrieval, reciprocal rank fusion, abstention and exact source citations.",
+  "category": "cv",
+  "demo_args": [],
+  "expected_exit": 0
+}
