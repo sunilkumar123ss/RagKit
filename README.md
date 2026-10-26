@@ -84,6 +84,8 @@ ragkit --help
 
 JSON accepts one record, an array, or `{"documents": [...]}`. Each record needs `title` and `text`; `id` and `source` are optional. An explicit existing ID replaces that document atomically. Without an ID, identical title/source/text gets a stable ID; changed content creates another document.
 
+If a document changes after retrieval, the source viewer checks that the original quote still matches its offsets. A stale citation shows the current document with a request to search again, without highlighting replacement text as evidence for the old answer.
+
 Open **http://127.0.0.1:8000/docs** for the API schema.
 
 ```sh
@@ -111,6 +113,7 @@ MCP uses the supported 1.x SDK over stdio, with search/answer tools over the exi
 ```sh
 python -m pip install -e '.[web,providers,mcp,langchain,dev]' 'qdrant-client>=1.15,<2'
 python -m pytest -q -m 'not live_models'
+node --test tests/*.test.cjs  # Source-viewer regressions; Node.js 22+, no npm install.
 ragkit evaluate --mode lexical --output benchmark-results.local.json
 
 # With the dense extra installed:

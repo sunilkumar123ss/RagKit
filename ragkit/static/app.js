@@ -197,16 +197,26 @@ async function inspect(id, citation = null) {
   try {
     const doc = await request(`/api/documents/${encodeURIComponent(id)}`);
     $('source-title').textContent = doc.title;
-    $('source-location').textContent = `${doc.source || 'Local document'} · ${formatNumber(doc.characters)} characters${citation ? ` · highlighted characters ${citation.start}–${citation.end}` : ''}`;
+    $('source-location').textContent = `${doc.source || 'Local document'} · ${formatNumber(doc.characters)} characters`;
     const container = $('source-original');
     container.replaceChildren();
     // Python citations use Unicode code-point offsets, not JavaScript UTF-16 units.
     const characters = Array.from(doc.text);
-    if (citation && Number.isInteger(citation.start) && Number.isInteger(citation.end)) {
-      const mark = element('mark', '', characters.slice(citation.start, citation.end).join(''));
+    // An explicit-ID import can replace a document after an answer was retrieved.
+    // Never present the new text at an old offset as evidence for that answer.
+    const matches = citation && Number.isInteger(citation.start) && Number.isInteger(citation.end)
+      && citation.start >= 0 && citation.end > citation.start && citation.end <= characters.length
+      && typeof citation.quote === 'string'
+      && characters.slice(citation.start, citation.end).join('') === citation.quote;
+    if (matches) {
+      $('source-location').textContent += ` · highlighted characters ${citation.start}–${citation.end}`;
+      const mark = element('mark', '', citation.quote);
       container.append(document.createTextNode(characters.slice(0, citation.start).join('')), mark, document.createTextNode(characters.slice(citation.end).join('')));
       mark.scrollIntoView({block: 'center'});
-    } else container.textContent = doc.text;
+    } else {
+      container.textContent = doc.text;
+      if (citation) $('source-location').textContent += ' · This document no longer matches this citation. Run your search again; no text is highlighted.';
+    }
   } catch (error) { $('source-original').textContent = error.message; }
 }
 
